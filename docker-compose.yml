@@ -1,0 +1,21 @@
+services:
+  hive-router:
+    image: ghcr.io/graphql-hive/router:latest
+    volumes:
+      - ./supergraph.graphql:/app/supergraph.graphql
+      - ./router.config.yaml:/app/router.config.yaml
+    ports:
+      - 4000:4000
+  #
+  # apollo-router:
+  #   image: ghcr.io/apollographql/router:v2.8.0
+  #   command: -c config/router.yaml -s schema/supergraph.graphql --anonymous-telemetry-disabled
+  #   volumes:
+  #     - type: bind
+  #       source: ./supergraph.graphql
+  #       target: /dist/schema/supergraph.graphql
+  #     - type: bind
+  #       source: ./router.yaml
+  #       target: /dist/config/router.yaml
+  #   ports:
+  #     - 4001:4000

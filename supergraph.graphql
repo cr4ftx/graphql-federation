@@ -1,0 +1,124 @@
+
+
+    schema
+    @link(url: "https://specs.apollo.dev/link/v1.0")
+    @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
+    
+    
+    
+    
+    
+    
+    
+  {
+    query: Query
+    
+    
+  }
+
+  
+    directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
+
+    directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+    
+      directive @join__field(
+        graph: join__Graph
+        requires: join__FieldSet
+        provides: join__FieldSet
+        type: String
+        external: Boolean
+        override: String
+        usedOverridden: Boolean
+        
+        
+      ) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+    
+    
+
+    directive @join__implements(
+      graph: join__Graph!
+      interface: String!
+    ) repeatable on OBJECT | INTERFACE
+
+    directive @join__type(
+      graph: join__Graph!
+      key: join__FieldSet
+      extension: Boolean! = false
+      resolvable: Boolean! = true
+      isInterfaceObject: Boolean! = false
+    ) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+    directive @join__unionMember(
+      graph: join__Graph!
+      member: String!
+    ) repeatable on UNION
+
+    scalar join__FieldSet
+    
+  
+  
+  directive @link(
+    url: String
+    as: String
+    for: link__Purpose
+    import: [link__Import]
+  ) repeatable on SCHEMA
+
+  scalar link__Import
+
+  enum link__Purpose {
+    """
+    `SECURITY` features provide metadata necessary to securely resolve fields.
+    """
+    SECURITY
+
+    """
+    `EXECUTION` features provide metadata necessary for operation execution.
+    """
+    EXECUTION
+  }
+
+  
+  
+  
+  
+  
+  
+  
+enum join__Graph {
+  RECIPES @join__graph(name: "recipes", url: "http://recipes/graphql") 
+  USERS @join__graph(name: "users", url: "http://users/graphql") 
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
+"""
+scalar DateTimeISO @join__type(graph: RECIPES) 
+
+type Query @join__type(graph: RECIPES)  @join__type(graph: USERS)  {
+  recipe(id: String!) : Recipe @join__field(graph: RECIPES) 
+  user(id: String!) : User @join__field(graph: USERS) 
+}
+
+type Recipe @join__type(graph: RECIPES)  @join__type(graph: USERS, key: "id")  {
+  creationDate: DateTimeISO! @join__field(graph: RECIPES) 
+  description: String @join__field(graph: RECIPES) 
+  id: ID!
+  ingredients: [String!]! @join__field(graph: RECIPES) 
+  title: String! @join__field(graph: RECIPES) 
+  user: User @join__field(graph: USERS) 
+}
+
+type User @join__type(graph: USERS)  {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  groups: [Group!]!
+}
+
+type Group @join__type(graph: USERS)  {
+  id: ID!
+  name: String!
+}
+    

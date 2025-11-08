@@ -1,0 +1,25 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  groups: [Group!]!
+}
+
+type Recipe {
+  id: ID!
+  user: User
+}
+
+type Group {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  dummyRecipe: Recipe
+  user(id: String!): User
+}

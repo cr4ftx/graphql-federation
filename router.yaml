@@ -1,0 +1,9 @@
+supergraph:
+  listen: 127.0.0.1:4000
+  path: /graphql
+cors:
+  policies: []
+csrf:
+  unsafe_disabled: true
+override_subgraph_url:
+  users: http://host.docker.internal:3000/graphql

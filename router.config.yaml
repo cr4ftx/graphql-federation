@@ -1,0 +1,9 @@
+supergraph:
+  source: file
+  path: ./supergraph.graphql
+override_subgraph_urls:
+  # The name of the subgraph to override
+  users:
+    url: "http://host.docker.internal:3000/graphql"
+  recipes:
+    url: "http://host.docker.internal:3001/graphql"
