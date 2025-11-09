@@ -4,7 +4,6 @@ import {
 } from "@nestjs/apollo";
 import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
-import { Recipe } from "./models/recipe.model";
 import { RecipeResolver } from "./recipe.resolver";
 import { UserResolver } from "./user.resolver";
 
@@ -12,15 +11,7 @@ import { UserResolver } from "./user.resolver";
 	imports: [
 		GraphQLModule.forRoot<ApolloFederationDriverConfig>({
 			driver: ApolloFederationDriver,
-			autoSchemaFile: {
-				federation: {
-					version: 2,
-				},
-				path: "users.graphql",
-			},
-			buildSchemaOptions: {
-				orphanedTypes: [Recipe],
-			},
+			typePaths: ["./**/*.graphql"],
 			graphiql: true,
 			playground: false,
 		}),

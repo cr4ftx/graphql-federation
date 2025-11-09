@@ -1,4 +1,4 @@
-import { Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
+import { Parent, ResolveField, Resolver } from "@nestjs/graphql";
 import { Recipe } from "./models/recipe.model";
 import { User } from "./models/user.model";
 import { user } from "./repositories/user.repository";
@@ -12,9 +12,4 @@ export class RecipeResolver {
     }
     return null
 	}
-
-  @Query(() => Recipe, { nullable: true })
-  dummyRecipe(): Recipe {
-    return { id: 'dummy' };
-  }
 }

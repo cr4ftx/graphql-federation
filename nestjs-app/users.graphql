@@ -1,25 +1,21 @@
-# ------------------------------------------------------
-# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
-# ------------------------------------------------------
-
-type User {
-  id: ID!
-  firstName: String!
-  lastName: String!
-  groups: [Group!]!
+type User @key(fields: "id") {
+	id: ID!
+	firstName: String!
+	lastName: String!
+	groups: [Group!]!
 }
 
-type Recipe {
-  id: ID!
-  user: User
+extend type Recipe @key(fields: "id") {
+	id: ID! @external
+	user: User
 }
 
 type Group {
-  id: ID!
-  name: String!
+	id: ID!
+	name: String!
 }
 
 type Query {
-  dummyRecipe: Recipe
-  user(id: String!): User
+	user(id: String!): User
 }
+

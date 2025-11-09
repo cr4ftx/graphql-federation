@@ -1,21 +1,48 @@
-import "reflect-metadata";
+import { buildSubgraphSchema } from "@apollo/subgraph";
 import fastify, { type FastifyReply, type FastifyRequest } from "fastify";
+import fs from "fs";
+import { parse } from "graphql";
+import type { Resolvers } from "graphql/generated.js";
 import { createYoga } from "graphql-yoga";
-import { buildSchema } from "type-graphql";
-import { RecipeResolver } from "./recipes/presentations/recipes/recipe.resolver.js";
+import path from "path";
+import { recipeResolver } from "./recipes/presentations/recipes/recipe.resolver.js";
 
 const app = fastify({ logger: true });
 
-const schema = await buildSchema({
-	resolvers: [RecipeResolver],
-	emitSchemaFile: "./recipe.graphql",
-});
+const resolvers: Resolvers = {
+	Query: {
+		recipe: recipeResolver,
+	},
+	User: {
+		recipes: () => [
+			{
+				id: "1",
+				creationDate: new Date(),
+				ingredients: [],
+				title: "test",
+			},
+			{
+				id: "2",
+				creationDate: new Date(),
+				ingredients: ["apple"],
+				title: "test 2",
+			},
+		],
+	},
+};
 
 const yoga = createYoga<{
 	req: FastifyRequest;
 	reply: FastifyReply;
 }>({
-	schema,
+	schema: buildSubgraphSchema({
+		typeDefs: parse(
+			fs
+				.readFileSync(path.join(import.meta.dirname, "../recipe.graphql"))
+				.toString("utf8"),
+		),
+		resolvers,
+	}),
 	logging: {
 		debug: (...args) => args.forEach((arg) => app.log.debug(arg)),
 		info: (...args) => args.forEach((arg) => app.log.info(arg)),
