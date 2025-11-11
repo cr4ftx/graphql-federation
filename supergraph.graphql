@@ -81,7 +81,7 @@ type Recipe
 	description: String @join__field(graph: RECIPES)
 	ingredients: [String!]! @join__field(graph: RECIPES)
 	title: String! @join__field(graph: RECIPES)
-	user: User @join__field(graph: USERS)
+	user: User @join__field(graph: RECIPES)
 }
 
 type User

@@ -10,6 +10,7 @@ type Recipe @key(fields: "id") {
 	description: String
 	ingredients: [String!]!
 	title: String!
+	user: User
 }
 
 extend type User @key(fields: "id") {

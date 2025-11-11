@@ -7,7 +7,6 @@ type User @key(fields: "id") {
 
 extend type Recipe @key(fields: "id") {
 	id: ID! @external
-	user: User
 }
 
 type Group {
@@ -18,4 +17,3 @@ type Group {
 type Query {
 	user(id: String!): User
 }
-

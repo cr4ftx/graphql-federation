@@ -15,6 +15,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   DateTimeISO: { input: any; output: any; }
+  _FieldSet: { input: any; output: any; }
 };
 
 export type Query = {
@@ -34,6 +35,7 @@ export type Recipe = {
   id: Scalars['ID']['output'];
   ingredients: Array<Scalars['String']['output']>;
   title: Scalars['String']['output'];
+  user?: Maybe<User>;
 };
 
 export type User = {
@@ -46,6 +48,17 @@ export type User = {
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
+export type ReferenceResolver<TResult, TReference, TContext> = (
+      reference: TReference,
+      context: TContext,
+      info: GraphQLResolveInfo
+    ) => Promise<TResult> | TResult;
+
+      type ScalarCheck<T, S> = S extends true ? T : NullableCheck<T, S>;
+      type NullableCheck<T, S> = Maybe<T> extends T ? Maybe<ListCheck<NonNullable<T>, S>> : ListCheck<T, S>;
+      type ListCheck<T, S> = T extends (infer U)[] ? NullableCheck<U, S>[] : GraphQLRecursivePick<T, S>;
+      export type GraphQLRecursivePick<T, S> = { [K in keyof T & keyof S]: ScalarCheck<T[K], S[K]> };
+    
 
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
@@ -109,30 +122,44 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
+/** Mapping of federation types */
+export type FederationTypes = {
+  Recipe: Recipe;
+  User: User;
+};
 
+/** Mapping of federation reference types */
+export type FederationReferenceTypes = {
+  Recipe:
+    ( { __typename: 'Recipe' }
+    & GraphQLRecursivePick<FederationTypes['Recipe'], {"id":true}> );
+  User:
+    ( { __typename: 'User' }
+    & GraphQLRecursivePick<FederationTypes['User'], {"id":true}> );
+};
 
 
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   DateTimeISO: ResolverTypeWrapper<Scalars['DateTimeISO']['output']>;
-  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
-  Recipe: ResolverTypeWrapper<Recipe>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  Recipe: ResolverTypeWrapper<Recipe>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   User: ResolverTypeWrapper<User>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Boolean: Scalars['Boolean']['output'];
   DateTimeISO: Scalars['DateTimeISO']['output'];
-  ID: Scalars['ID']['output'];
   Query: Record<PropertyKey, never>;
-  Recipe: Recipe;
   String: Scalars['String']['output'];
-  User: User;
+  Recipe: Recipe | FederationReferenceTypes['Recipe'];
+  ID: Scalars['ID']['output'];
+  User: User | FederationReferenceTypes['User'];
+  Boolean: Scalars['Boolean']['output'];
 };
 
 export interface DateTimeIsoScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTimeISO'], any> {
@@ -143,16 +170,18 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   recipe?: Resolver<Maybe<ResolversTypes['Recipe']>, ParentType, ContextType, RequireFields<QueryRecipeArgs, 'id'>>;
 };
 
-export type RecipeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Recipe'] = ResolversParentTypes['Recipe']> = {
+export type RecipeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Recipe'] = ResolversParentTypes['Recipe'], FederationReferenceType extends FederationReferenceTypes['Recipe'] = FederationReferenceTypes['Recipe']> = {
+  __resolveReference?: ReferenceResolver<Maybe<ResolversTypes['Recipe']> | FederationReferenceType, FederationReferenceType, ContextType>;
   creationDate?: Resolver<ResolversTypes['DateTimeISO'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   ingredients?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User'], FederationReferenceType extends FederationReferenceTypes['User'] = FederationReferenceTypes['User']> = {
+  __resolveReference?: ReferenceResolver<Maybe<ResolversTypes['User']> | FederationReferenceType, FederationReferenceType, ContextType>;
   recipes?: Resolver<Array<ResolversTypes['Recipe']>, ParentType, ContextType>;
 };
 
