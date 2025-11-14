@@ -8,16 +8,17 @@ import {
 } from '@nestjs/graphql';
 import { User } from './models/user.model';
 import { Group } from './models/group.model';
-import { user } from './repositories/user.repository';
+import { UserRepository } from './repositories/user.repository';
 
 @Resolver('User')
 export class UserResolver {
+  constructor(
+    private readonly userRepository: UserRepository
+  ) {}
+
   @Query()
   async user(@Args('id') id: string): Promise<User | null> {
-    if (id !== '1') {
-      return null;
-    }
-    return user;
+    return this.userRepository.findById(id);
   }
 
   @ResolveField()
@@ -29,7 +30,7 @@ export class UserResolver {
   }
 
   @ResolveReference()
-  resolveReference(ref: { __typename: string; id: string }) {
-    return user;
+  resolveReference(ref: User) {
+    return this.userRepository.findById(ref.id);
   }
 }

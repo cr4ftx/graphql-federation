@@ -27,3 +27,4 @@ Benchmarks a federated query with and without a dataloader
 ## Notes
 
 - Harder to expose federated types with federation, might not be doable with nestjs code first approch
+- schema first approch gives more control, help defining a contract and overall is better for federation

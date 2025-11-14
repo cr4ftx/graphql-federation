@@ -4,6 +4,7 @@ import {
 } from "@nestjs/apollo";
 import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
+import { UserRepositoryProvider } from "./repositories/user.provider";
 import { UserResolver } from "./user.resolver";
 
 @Module({
@@ -15,6 +16,6 @@ import { UserResolver } from "./user.resolver";
 			playground: false,
 		}),
 	],
-	providers: [UserResolver],
+	providers: [UserResolver, UserRepositoryProvider],
 })
 export class AppModule {}

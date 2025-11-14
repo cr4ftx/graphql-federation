@@ -13,6 +13,7 @@ const recipeToGQL = (recipe: Recipe): RecipeGQL => ({
 	ingredients: recipe.ingredients,
 	title: recipe.title,
 	creationDate: recipe.createdAt,
+	description: recipe.description,
 	userId: recipe.userId,
 	user: undefined as unknown as UserGQL,
 });
