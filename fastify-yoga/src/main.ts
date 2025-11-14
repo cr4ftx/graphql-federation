@@ -5,7 +5,7 @@ import fs from "fs";
 import { parse } from "graphql";
 import { createYoga } from "graphql-yoga";
 import path from "path";
-import { resolvers } from "./resolvers.js";
+import { resolvers } from "./recipes/presentations/presentation/resolvers.js";
 
 const app = fastify({ logger: true });
 

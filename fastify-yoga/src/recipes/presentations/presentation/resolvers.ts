@@ -1,13 +1,15 @@
 import type { Resolvers } from "graphql/generated.js";
 import {
 	recipeResolver,
+	recipesResolver,
 	recipeUserResolver,
 	userRecipesResolver,
-} from "./recipes/presentations/recipes/recipe.resolver.js";
+} from "./recipe.resolver.js";
 
 export const resolvers: Resolvers = {
 	Query: {
 		recipe: recipeResolver,
+		recipes: recipesResolver,
 	},
 	Recipe: {
 		user: recipeUserResolver,

@@ -16,9 +16,9 @@ Expose a federated gateway using apollo and hive, each of them propose a router 
 
 - [x] internal field resolver
 - [x] federation field resolver
-- [ ] internal reference field resolver
-- [ ] cursor based pagination using relay spec
+- [x] internal reference field resolver
 - [ ] dataloader
+- [ ] cursor based pagination using relay spec
 
 ## Benchmarks
 

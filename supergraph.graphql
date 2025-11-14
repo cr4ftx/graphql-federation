@@ -69,6 +69,7 @@ scalar DateTimeISO @join__type(graph: RECIPES)
 
 type Query @join__type(graph: RECIPES) @join__type(graph: USERS) {
 	recipe(id: String!): Recipe @join__field(graph: RECIPES)
+	recipes: [Recipe!]! @join__field(graph: RECIPES)
 	user(id: String!): User @join__field(graph: USERS)
 }
 
@@ -81,7 +82,8 @@ type Recipe
 	description: String @join__field(graph: RECIPES)
 	ingredients: [String!]! @join__field(graph: RECIPES)
 	title: String! @join__field(graph: RECIPES)
-	user: User @join__field(graph: RECIPES)
+	userId: String! @join__field(graph: RECIPES)
+	user: User! @join__field(graph: RECIPES)
 }
 
 type User

@@ -21,6 +21,7 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   recipe?: Maybe<Recipe>;
+  recipes: Array<Recipe>;
 };
 
 
@@ -35,7 +36,8 @@ export type Recipe = {
   id: Scalars['ID']['output'];
   ingredients: Array<Scalars['String']['output']>;
   title: Scalars['String']['output'];
-  user?: Maybe<User>;
+  user: User;
+  userId: Scalars['String']['output'];
 };
 
 export type User = {
@@ -168,6 +170,7 @@ export interface DateTimeIsoScalarConfig extends GraphQLScalarTypeConfig<Resolve
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   recipe?: Resolver<Maybe<ResolversTypes['Recipe']>, ParentType, ContextType, RequireFields<QueryRecipeArgs, 'id'>>;
+  recipes?: Resolver<Array<ResolversTypes['Recipe']>, ParentType, ContextType>;
 };
 
 export type RecipeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Recipe'] = ResolversParentTypes['Recipe'], FederationReferenceType extends FederationReferenceTypes['Recipe'] = FederationReferenceTypes['Recipe']> = {
@@ -177,7 +180,8 @@ export type RecipeResolvers<ContextType = any, ParentType extends ResolversParen
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   ingredients?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User'], FederationReferenceType extends FederationReferenceTypes['User'] = FederationReferenceTypes['User']> = {

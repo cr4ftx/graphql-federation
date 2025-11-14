@@ -1,9 +1,16 @@
 import { composeServices } from "@theguild/federation-composition";
 import fs from "fs";
 import { parse } from "graphql";
+import path from "path";
 
-const users = fs.readFileSync("./nestjs-app/users.graphql", "utf8");
-const recipes = fs.readFileSync("./fastify-yoga/recipe.graphql", "utf8");
+const users = fs.readFileSync(
+	path.join(import.meta.dirname, "./nestjs-app/users.graphql"),
+	"utf8",
+);
+const recipes = fs.readFileSync(
+	path.join(import.meta.dirname, "./fastify-yoga/recipe.graphql"),
+	"utf8",
+);
 
 const result = composeServices([
 	{
@@ -23,6 +30,9 @@ if (!result.supergraphSdl) {
 	throw new Error("compose services failed");
 }
 
-fs.writeFileSync("./supergraph.graphql", result.supergraphSdl);
+fs.writeFileSync(
+	path.join(import.meta.dirname, "./supergraph.graphql"),
+	result.supergraphSdl,
+);
 
 console.log("✅ Supergraph written to supergraph.graphql");

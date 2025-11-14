@@ -2,6 +2,7 @@ scalar DateTimeISO
 
 type Query {
 	recipe(id: String!): Recipe
+	recipes: [Recipe!]!
 }
 
 type Recipe @key(fields: "id") {
@@ -10,7 +11,8 @@ type Recipe @key(fields: "id") {
 	description: String
 	ingredients: [String!]!
 	title: String!
-	user: User
+	userId: String!
+	user: User!
 }
 
 extend type User @key(fields: "id") {
