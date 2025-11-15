@@ -1,104 +1,125 @@
-schema
-	@link(url: "https://specs.apollo.dev/link/v1.0")
-	@link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
-{
-	query: Query
-}
 
-directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
 
-directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+    schema
+    @link(url: "https://specs.apollo.dev/link/v1.0")
+    @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
+    
+    
+    
+    
+    
+    
+    
+  {
+    query: Query
+    
+    
+  }
 
-directive @join__field(
-	graph: join__Graph
-	requires: join__FieldSet
-	provides: join__FieldSet
-	type: String
-	external: Boolean
-	override: String
-	usedOverridden: Boolean
-) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+  
+    directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
 
-directive @join__implements(
-	graph: join__Graph!
-	interface: String!
-) repeatable on OBJECT | INTERFACE
+    directive @join__graph(name: String!, url: String!) on ENUM_VALUE
 
-directive @join__type(
-	graph: join__Graph!
-	key: join__FieldSet
-	extension: Boolean! = false
-	resolvable: Boolean! = true
-	isInterfaceObject: Boolean! = false
-) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+    
+      directive @join__field(
+        graph: join__Graph
+        requires: join__FieldSet
+        provides: join__FieldSet
+        type: String
+        external: Boolean
+        override: String
+        usedOverridden: Boolean
+        
+        
+      ) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+    
+    
 
-directive @join__unionMember(
-	graph: join__Graph!
-	member: String!
-) repeatable on UNION
+    directive @join__implements(
+      graph: join__Graph!
+      interface: String!
+    ) repeatable on OBJECT | INTERFACE
 
-scalar join__FieldSet
+    directive @join__type(
+      graph: join__Graph!
+      key: join__FieldSet
+      extension: Boolean! = false
+      resolvable: Boolean! = true
+      isInterfaceObject: Boolean! = false
+    ) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
 
-directive @link(
-	url: String
-	as: String
-	for: link__Purpose
-	import: [link__Import]
-) repeatable on SCHEMA
+    directive @join__unionMember(
+      graph: join__Graph!
+      member: String!
+    ) repeatable on UNION
 
-scalar link__Import
+    scalar join__FieldSet
+    
+  
+  
+  directive @link(
+    url: String
+    as: String
+    for: link__Purpose
+    import: [link__Import]
+  ) repeatable on SCHEMA
 
-enum link__Purpose {
-	"""
-	`SECURITY` features provide metadata necessary to securely resolve fields.
-	"""
-	SECURITY
+  scalar link__Import
 
-	"""
-	`EXECUTION` features provide metadata necessary for operation execution.
-	"""
-	EXECUTION
-}
+  enum link__Purpose {
+    """
+    `SECURITY` features provide metadata necessary to securely resolve fields.
+    """
+    SECURITY
 
+    """
+    `EXECUTION` features provide metadata necessary for operation execution.
+    """
+    EXECUTION
+  }
+
+  
+  
+  
+  
+  
+  
+  
 enum join__Graph {
-	RECIPES @join__graph(name: "recipes", url: "http://recipes/graphql")
-	USERS @join__graph(name: "users", url: "http://users/graphql")
+  RECIPES @join__graph(name: "recipes", url: "http://recipes/graphql") 
+  USERS @join__graph(name: "users", url: "http://users/graphql") 
 }
 
-scalar DateTimeISO @join__type(graph: RECIPES)
+scalar DateTimeISO @join__type(graph: RECIPES) 
 
-type Query @join__type(graph: RECIPES) @join__type(graph: USERS) {
-	recipe(id: String!): Recipe @join__field(graph: RECIPES)
-	recipes: [Recipe!]! @join__field(graph: RECIPES)
-	user(id: String!): User @join__field(graph: USERS)
+type Query @join__type(graph: RECIPES)  @join__type(graph: USERS)  {
+  recipe(id: String!) : Recipe @join__field(graph: RECIPES) 
+  recipes: [Recipe!]! @join__field(graph: RECIPES) 
+  user(id: String!) : User @join__field(graph: USERS) 
+  groups: [Group!]! @join__field(graph: USERS) 
 }
 
-type Recipe
-	@join__type(graph: RECIPES, key: "id")
-	@join__type(graph: USERS, key: "id")
-{
-	id: ID!
-	creationDate: DateTimeISO! @join__field(graph: RECIPES)
-	description: String @join__field(graph: RECIPES)
-	ingredients: [String!]! @join__field(graph: RECIPES)
-	title: String! @join__field(graph: RECIPES)
-	userId: String! @join__field(graph: RECIPES)
-	user: User! @join__field(graph: RECIPES)
+type Recipe @join__type(graph: RECIPES, key: "id")  @join__type(graph: USERS, key: "id")  {
+  id: ID!
+  creationDate: DateTimeISO! @join__field(graph: RECIPES) 
+  description: String @join__field(graph: RECIPES) 
+  ingredients: [String!]! @join__field(graph: RECIPES) 
+  title: String! @join__field(graph: RECIPES) 
+  userId: String! @join__field(graph: RECIPES) 
+  user: User! @join__field(graph: RECIPES) 
 }
 
-type User
-	@join__type(graph: RECIPES, key: "id")
-	@join__type(graph: USERS, key: "id")
-{
-	id: ID!
-	recipes: [Recipe!]! @join__field(graph: RECIPES)
-	firstName: String! @join__field(graph: USERS)
-	lastName: String! @join__field(graph: USERS)
-	groups: [Group!]! @join__field(graph: USERS)
+type User @join__type(graph: RECIPES, key: "id")  @join__type(graph: USERS, key: "id")  {
+  id: ID!
+  recipes: [Recipe!]! @join__field(graph: RECIPES) 
+  firstName: String! @join__field(graph: USERS) 
+  lastName: String! @join__field(graph: USERS) 
+  groups: [Group!]! @join__field(graph: USERS) 
 }
 
-type Group @join__type(graph: USERS) {
-	id: ID!
-	name: String!
+type Group @join__type(graph: USERS)  {
+  id: ID!
+  name: String!
 }
-
+    

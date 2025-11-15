@@ -1,13 +1,10 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
-export class User {
+export class GroupDTO {
 	@Field(() => ID)
 	id: string;
 
 	@Field()
-	firstName: string;
-
-	@Field()
-	lastName: string;
+	name: string;
 }

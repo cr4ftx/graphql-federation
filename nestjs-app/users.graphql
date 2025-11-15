@@ -16,4 +16,5 @@ type Group {
 
 type Query {
 	user(id: String!): User
+	groups: [Group!]!
 }

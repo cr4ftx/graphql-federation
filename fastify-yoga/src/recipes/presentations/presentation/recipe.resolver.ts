@@ -41,9 +41,13 @@ export const recipesResolver: NonNullable<
 export const recipeUserResolver: NonNullable<RecipeResolvers["user"]> = (
 	parent,
 ) => {
+	const recipe = recipeRepository.findById(parent.id);
+	if (!recipe) {
+		throw new Error("recipe not found");
+	}
 	return {
 		__typename: "User",
-		id: parent.id,
+		id: recipe.userId,
 		recipes: [],
 	};
 };
