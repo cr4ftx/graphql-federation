@@ -17,8 +17,10 @@ Expose a federated gateway using apollo and hive, each of them propose a router 
 - [x] internal field resolver
 - [x] federation field resolver
 - [x] internal reference field resolver
-- [ ] dataloader
-- [ ] cursor based pagination using relay spec
+- [ ] add some repositories using node-pg
+- [ ] load test using k6 or gatling
+- [ ] implement a dataloader an mesure performance
+- [ ] cursor based pagination
 
 ## Benchmarks
 
@@ -27,4 +29,4 @@ Benchmarks a federated query with and without a dataloader
 ## Notes
 
 - Harder to expose federated types with federation, might not be doable with nestjs code first approch
-- schema first approch gives more control, help defining a contract and overall is better for federation
+- Schema first approch gives more control, help defining a contract and overall is better for federation

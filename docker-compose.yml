@@ -1,4 +1,21 @@
 services:
+  postgres:
+    image: postgres:18.2
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=recipes
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    command: ["postgres", "-c", "log_statement=all"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 15s
+      timeout: 5s
+      retries: 15
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
   hive-router:
     image: ghcr.io/graphql-hive/router:latest
     volumes:

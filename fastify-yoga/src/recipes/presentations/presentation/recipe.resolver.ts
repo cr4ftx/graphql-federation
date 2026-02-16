@@ -22,7 +22,7 @@ export const recipeResolver: NonNullable<QueryResolvers["recipe"]> = async (
 	_,
 	{ id },
 ) => {
-	const recipe = recipeRepository.findById(id);
+	const recipe = await recipeRepository.findById(id);
 
 	if (!recipe) {
 		return null;
@@ -34,17 +34,20 @@ export const recipeResolver: NonNullable<QueryResolvers["recipe"]> = async (
 export const recipesResolver: NonNullable<
 	QueryResolvers["recipes"]
 > = async () => {
-	const recipes = recipeRepository.findAll();
+	const recipes = await recipeRepository.findAll();
+
 	return recipes.map(recipeToGQL);
 };
 
-export const recipeUserResolver: NonNullable<RecipeResolvers["user"]> = (
+export const recipeUserResolver: NonNullable<RecipeResolvers["user"]> = async (
 	parent,
 ) => {
-	const recipe = recipeRepository.findById(parent.id);
+	const recipe = await recipeRepository.findById(parent.id);
+
 	if (!recipe) {
 		throw new Error("recipe not found");
 	}
+
 	return {
 		__typename: "User",
 		id: recipe.userId,
@@ -52,9 +55,10 @@ export const recipeUserResolver: NonNullable<RecipeResolvers["user"]> = (
 	};
 };
 
-export const userRecipesResolver: NonNullable<UserResolvers["recipes"]> = (
-	parent,
-) => {
-	const recipes = recipeRepository.findAllByUserId(parent.id);
+export const userRecipesResolver: NonNullable<
+	UserResolvers["recipes"]
+> = async (parent) => {
+	const recipes = await recipeRepository.findAllByUserId(parent.id);
+
 	return recipes.map(recipeToGQL);
 };

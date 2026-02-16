@@ -1,39 +1,34 @@
 import type { Recipe } from "../domain/recipe.js";
+import { pool } from "./database.js";
 
-export const recipes: Recipe[] = [
-	{
-		id: "1",
-		ingredients: ["banana"],
-		title: "test",
-		description: "this is my awesome test",
-		userId: "1",
-		createdAt: new Date(),
-	},
-	{
-		id: "2",
-		ingredients: ["apple"],
-		title: "Baked apple",
-		description: "My second awesome recipe",
-		userId: "2",
-		createdAt: new Date(),
-	},
-	{
-		id: "3",
-		ingredients: ["pinaple"],
-		title: "Pinaple pizza",
-		description: "Beurk",
-		userId: "1",
-		createdAt: new Date(),
-	},
-];
+const fromDatabaseToRecipe = (row: any): Recipe => ({
+	id: row.id,
+	title: row.title,
+	description: row.description,
+	ingredients: row.ingredients,
+	userId: row.user_id,
+	createdAt: new Date(),
+});
 
-const findAll = (): Recipe[] => recipes;
+const findAll = async (): Promise<Recipe[]> => {
+	const result = await pool.query(`SELECT * FROM "recipe"`);
+	return result.rows.map((row) => fromDatabaseToRecipe(row));
+};
 
-const findById = (id: string): Recipe | null =>
-	recipes.find((recipe) => recipe.id === id) ?? null;
+const findById = async (id: string): Promise<Recipe | null> => {
+	const result = await pool.query(`SELECT * FROM "recipe" where id = $1`, [id]);
+	if (result.rows.length === 0) {
+		return null;
+	}
+	return fromDatabaseToRecipe(result.rows[0]);
+};
 
-const findAllByUserId = (userId: string): Recipe[] =>
-	recipes.filter((recipe) => recipe.userId === userId);
+const findAllByUserId = async (userId: string): Promise<Recipe[]> => {
+	const result = await pool.query(`SELECT * FROM "recipe" where user_id = $1`, [
+		userId,
+	]);
+	return result.rows.map((row) => fromDatabaseToRecipe(row));
+};
 
 export const recipeRepository = {
 	findAll,
