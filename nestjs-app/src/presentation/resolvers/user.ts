@@ -29,6 +29,12 @@ export class UserResolver {
     return mapUserToDTO(user)
   }
 
+  @Query()
+  async users(): Promise<UserDTO[] | null> {
+    const users = await this.userRepository.findAll();
+    return users.map(mapUserToDTO)
+  }
+
   @ResolveField()
   async groups(@Parent() user: UserDTO): Promise<GroupDTO[]> {
     const groups = await this.groupRepository.findAllByUserId(user.id)

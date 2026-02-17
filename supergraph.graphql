@@ -97,6 +97,7 @@ type Query @join__type(graph: RECIPES)  @join__type(graph: USERS)  {
   recipe(id: String!) : Recipe @join__field(graph: RECIPES) 
   recipes: [Recipe!]! @join__field(graph: RECIPES) 
   user(id: String!) : User @join__field(graph: USERS) 
+  users: [User!]! @join__field(graph: USERS) 
   groups: [Group!]! @join__field(graph: USERS) 
 }
 
