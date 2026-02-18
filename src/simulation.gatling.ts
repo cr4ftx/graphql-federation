@@ -1,6 +1,8 @@
 import {
 	constantUsersPerSec,
+	incrementUsersPerSec,
 	rampUsers,
+	rampUsersPerSec,
 	StringBody,
 	scenario,
 	simulation,
@@ -40,9 +42,9 @@ export default simulation((setUp) => {
 
 	setUp(
 		scn.injectOpen(
-			rampUsers(500).during(10),
-			constantUsersPerSec(100).during(5),
 			rampUsers(100).during(5),
+			constantUsersPerSec(200).during(5),
+			rampUsersPerSec(200).to(400).during(10),
 		),
 	).protocols(httpProtocol);
 });

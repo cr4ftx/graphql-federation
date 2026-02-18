@@ -5,6 +5,7 @@ import fs from "fs";
 import { parse } from "graphql";
 import { createYoga } from "graphql-yoga";
 import path from "path";
+import { runWithDataLoaderContext } from "./recipes/presentations/presentation/dataloader.context.js";
 import { resolvers } from "./recipes/presentations/presentation/resolvers.js";
 
 const app = fastify({ logger: true });
@@ -35,10 +36,12 @@ app.route({
 	url: yoga.graphqlEndpoint,
 	method: ["GET", "POST", "OPTIONS"],
 	handler: (req, reply) =>
-		yoga.handleNodeRequestAndResponse(req, reply, {
-			req,
-			reply,
-		}),
+		runWithDataLoaderContext(() =>
+			yoga.handleNodeRequestAndResponse(req, reply, {
+				req,
+				reply,
+			}),
+		),
 });
 
 app.listen({ port: 3001 });

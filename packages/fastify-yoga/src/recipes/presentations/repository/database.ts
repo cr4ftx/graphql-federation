@@ -6,5 +6,5 @@ export const pool = new Pool({
 	password: "postgres",
 	database: "recipes",
 	port: 5432,
-	max: 20,
+	max: 1,
 });

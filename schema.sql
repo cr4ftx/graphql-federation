@@ -17,7 +17,7 @@ SELECT
   'John',
   'Doe'
 FROM
-  generate_series (1, 1000);
+  generate_series (1, 100);
 
 INSERT INTO
   "group"
@@ -90,32 +90,8 @@ WITH recipe_data as (
   FROM
     "user" u
   CROSS JOIN
-    -- Generate random number of recipes between 10 and 100 per user
-    generate_series(1, (10 + random() * 90)::int) recipe_num
+    -- Generate random number of recipes between 10 and 20 per user
+    generate_series(1, (50 + random() * 50)::int) recipe_num
 )
 INSERT INTO "recipe" (id, title, description, user_id, ingredients)
 SELECT recipe_id, title, description, user_id, ingredients FROM recipe_data;
-
--- Query to verify recipe distribution per user
--- This will show you how many recipes each user has (should be between 10-100)
--- Uncomment the following lines to check the distribution after running the script:
-/*
-SELECT
-  COUNT(*) as recipe_count,
-  COUNT(DISTINCT user_id) as users_with_this_count
-FROM "recipe"
-GROUP BY user_id
-ORDER BY recipe_count;
-
--- Summary statistics
-SELECT
-  MIN(recipe_count) as min_recipes,
-  MAX(recipe_count) as max_recipes,
-  AVG(recipe_count)::int as avg_recipes,
-  COUNT(*) as total_users
-FROM (
-  SELECT user_id, COUNT(*) as recipe_count
-  FROM "recipe"
-  GROUP BY user_id
-) user_recipe_counts;
-*/

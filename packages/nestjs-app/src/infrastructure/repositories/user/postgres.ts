@@ -19,6 +19,8 @@ export class PostgresUserRepository extends UserRepository {
 
 	async findAll(): Promise<User[]> {
 		const result = await pool.query(`SELECT * FROM "user"`);
+		const milis = 10 + Math.round(Math.random() * 40);
+		await new Promise((r) => setTimeout(r, milis));
 		return result.rows.map(fromDatabaseToUser);
 	}
 }

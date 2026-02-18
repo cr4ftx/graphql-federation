@@ -17,9 +17,9 @@ Expose a federated gateway using apollo and hive, each of them propose a router 
 - [x] internal field resolver
 - [x] federation field resolver
 - [x] internal reference field resolver
-- [ ] add some repositories using node-pg
-- [ ] load test using k6 or gatling
-- [ ] implement a dataloader an mesure performance
+- [x] add some repositories using node-pg
+- [ ] load test using gatling
+- [ ] implement a dataloader while mesuring performance
 - [ ] cursor based pagination
 
 ## Benchmarks

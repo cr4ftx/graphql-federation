@@ -7,6 +7,7 @@ import type {
 } from "graphql/generated.js";
 import type { Recipe } from "../domain/recipe.js";
 import { recipeRepository } from "../repository/recipe.repository.js";
+import { getRecipeLoader as getRecipeByUserIdLoader } from "./dataloader.context.js";
 
 const recipeToGQL = (recipe: Recipe): RecipeGQL => ({
 	id: recipe.id,
@@ -58,7 +59,13 @@ export const recipeUserResolver: NonNullable<RecipeResolvers["user"]> = async (
 export const userRecipesResolver: NonNullable<
 	UserResolvers["recipes"]
 > = async (parent) => {
-	const recipes = await recipeRepository.findAllByUserId(parent.id);
+	let recipes: Recipe[] = [];
+	if (process.env.DATA_LOADER === "true") {
+		const recipeByUserId = getRecipeByUserIdLoader();
+		recipes = await recipeByUserId.load(parent.id);
+	} else {
+		recipes = await recipeRepository.findAllByUserId(parent.id);
+	}
 
 	return recipes.map(recipeToGQL);
 };

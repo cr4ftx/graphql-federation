@@ -24,14 +24,28 @@ const findById = async (id: string): Promise<Recipe | null> => {
 };
 
 const findAllByUserId = async (userId: string): Promise<Recipe[]> => {
-	const result = await pool.query(`SELECT * FROM "recipe" where user_id = $1`, [
-		userId,
-	]);
+	const result = await pool.query(
+		`SELECT * FROM "recipe", pg_sleep(0.1 + random() * 0.4) where user_id = $1`,
+		[userId],
+	);
+	return result.rows.map((row) => fromDatabaseToRecipe(row));
+};
+
+const findAllByUserIds = async (userIds: string[]): Promise<Recipe[]> => {
+	if (userIds.length === 0) {
+		return [];
+	}
+	const placeholders = userIds.map((_, index) => `$${index + 1}`).join(",");
+	const result = await pool.query(
+		`SELECT * FROM "recipe", pg_sleep(0.1 + random() * 0.4) where user_id IN (${placeholders})`,
+		userIds,
+	);
 	return result.rows.map((row) => fromDatabaseToRecipe(row));
 };
 
 export const recipeRepository = {
+	findById,
 	findAll,
 	findAllByUserId,
-	findById,
+	findAllByUserIds,
 };
