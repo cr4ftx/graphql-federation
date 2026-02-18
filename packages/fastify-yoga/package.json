@@ -8,7 +8,7 @@
 		"typecheck": "tsc --noEmit",
 		"codegen": "graphql-codegen -c .graphqlrc.yml",
 		"codegen:watch": "graphql-codegen -c .graphqlrc.yml --watch",
-		"dev": "tsx watch src/main.ts | pino-pretty"
+		"dev": "tsx watch --clear-screen=false src/main.ts | pino-pretty"
 	},
 	"keywords": [],
 	"author": "",

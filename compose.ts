@@ -4,11 +4,11 @@ import { parse } from "graphql";
 import path from "path";
 
 const users = fs.readFileSync(
-	path.join(import.meta.dirname, "./nestjs-app/users.graphql"),
+	path.join(import.meta.dirname, "./packages/nestjs-app/users.graphql"),
 	"utf8",
 );
 const recipes = fs.readFileSync(
-	path.join(import.meta.dirname, "./fastify-yoga/recipe.graphql"),
+	path.join(import.meta.dirname, "./packages/fastify-yoga/recipe.graphql"),
 	"utf8",
 );
 

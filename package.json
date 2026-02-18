@@ -2,12 +2,9 @@
 	"type": "module",
 	"scripts": {
 		"compose": "node compose.ts",
-		"compose:watch": "node --watch --watch-path=./nestjs-app/users.graphql --watch-path=./fastify-yoga/recipe.graphql compose.ts",
-		"predev": "pnpm compose",
-		"dev": "concurrently pnpm:dev:nestjs pnpm:dev:fastify pnpm:hive",
-		"hive": "docker compose up",
-		"dev:nestjs": "pnpm -C nestjs-app start:dev",
-		"dev:fastify": "pnpm -C fastify-yoga dev",
+		"compose:watch": "node --watch --watch-path=./packages/nestjs-app/users.graphql --watch-path=./packages/fastify-yoga/recipe.graphql compose.ts",
+		"docker": "docker compose up",
+		"dev": "pnpm compose && pnpm docker",
 		"test:load": "gatling run"
 	},
 	"devDependencies": {
