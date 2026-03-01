@@ -1,21 +1,21 @@
 scalar DateTimeISO
 
 type Query {
-	recipe(id: String!): Recipe
-	recipes: [Recipe!]!
+  recipe(id: String!): Recipe
+  recipes: [Recipe!]!
 }
 
 type Recipe @key(fields: "id") {
-	id: ID!
-	creationDate: DateTimeISO!
-	description: String
-	ingredients: [String!]!
-	title: String!
-	userId: String!
-	user: User!
+  id: ID!
+  creationDate: DateTimeISO!
+  description: String
+  ingredients: [String!]!
+  title: String!
+  userId: String!
+  user: User!
 }
 
 extend type User @key(fields: "id") {
-	id: ID! @external
-	recipes: [Recipe!]!
+  id: ID! @external
+  recipes: [Recipe!]!
 }

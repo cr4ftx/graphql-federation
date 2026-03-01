@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -eo pipefail
+
+pnpm fmt
+git update-index --again

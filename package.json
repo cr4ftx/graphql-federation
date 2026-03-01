@@ -1,20 +1,24 @@
 {
-	"type": "module",
-	"scripts": {
-		"compose": "node compose.ts",
-		"compose:watch": "node --watch --watch-path=./packages/nestjs-app/users.graphql --watch-path=./packages/fastify-yoga/recipe.graphql compose.ts",
-		"docker": "docker compose up",
-		"dev": "pnpm compose && pnpm docker",
-		"test:load": "gatling run"
-	},
-	"devDependencies": {
-		"@apollo/composition": "2.11.3",
-		"@gatling.io/cli": "3.14.905",
-		"@gatling.io/core": "3.14.905",
-		"@gatling.io/http": "3.14.905",
-		"@theguild/federation-composition": "0.20.2",
-		"@types/node": "24.9.2",
-		"concurrently": "9.2.1",
-		"graphql": "16.11.0"
-	}
+  "type": "module",
+  "scripts": {
+    "prepare": "git config --local core.hooksPath .hooks || true",
+    "compose": "node compose.ts",
+    "compose:watch": "node --watch --watch-path=./packages/nestjs-app/users.graphql --watch-path=./packages/fastify-yoga/recipe.graphql compose.ts",
+    "docker": "docker compose up",
+    "dev": "pnpm compose && pnpm docker",
+    "lint": "oxlint",
+    "fmt": "oxfmt",
+    "test:load": "gatling run"
+  },
+  "devDependencies": {
+    "@apollo/composition": "2.11.3",
+    "@gatling.io/cli": "3.14.905",
+    "@gatling.io/core": "3.14.905",
+    "@gatling.io/http": "3.14.905",
+    "@theguild/federation-composition": "0.20.2",
+    "@types/node": "24.9.2",
+    "graphql": "16.11.0",
+    "oxfmt": "0.35.0",
+    "oxlint": "1.50.0"
+  }
 }

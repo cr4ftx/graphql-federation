@@ -1,21 +1,21 @@
 type User @key(fields: "id") {
-	id: ID!
-	firstName: String!
-	lastName: String!
-	groups: [Group!]!
+  id: ID!
+  firstName: String!
+  lastName: String!
+  groups: [Group!]!
 }
 
 extend type Recipe @key(fields: "id") {
-	id: ID! @external
+  id: ID! @external
 }
 
 type Group {
-	id: ID!
-	name: String!
+  id: ID!
+  name: String!
 }
 
 type Query {
-	user(id: String!): User
-	users: [User!]!
-	groups: [Group!]!
+  user(id: String!): User
+  users: [User!]!
+  groups: [Group!]!
 }
