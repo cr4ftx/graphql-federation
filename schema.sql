@@ -6,7 +6,7 @@ CREATE TABLE "recipe" (
   id UUID,
   title TEXT,
   description TEXT,
-  user_id TEXT,
+  user_id UUID,
   ingredients TEXT[]
 );
 
